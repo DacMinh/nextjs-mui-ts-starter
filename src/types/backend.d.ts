@@ -60,5 +60,18 @@ declare global {
         setCurrentTrack: (v: IShareTrack) => void;
     }
 
+    interface ITrackPaginate {
+        current: number,
+        pageSize: number,
+        pages: number,
+        total: number
+    }
+    interface ITrackComment {
+        current: number,
+        pageSize: number,
+        pages: number,
+        total: number
+    }
+
 }
 

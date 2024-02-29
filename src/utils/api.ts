@@ -55,7 +55,7 @@ export const sendRequestFile = async <T>(props: IRequest) => {
         method: method,
         // by default setting the content-type to be json type
         headers: new Headers({ ...headers }),
-        body: body ? body: null,
+        body: body ? body : null,
         ...nextOption
     };
     if (useCredentials) options.credentials = "include";
@@ -80,3 +80,8 @@ export const sendRequestFile = async <T>(props: IRequest) => {
     });
 };
 
+export const fetchDefaultImages = (type: string) => {
+    if (type === "GITHUB") return "/user/default-github.png"
+    if (type === "GOOGLE") return "/user/default-google.png"
+    return "/user/default-user.png"
+}

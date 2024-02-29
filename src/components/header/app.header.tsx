@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut, useSession } from "next-auth/react"
 import { signIn } from "next-auth/react"
+import { fetchDefaultImages } from '@/utils/api';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -109,7 +110,7 @@ export default function AppHeader() {
             onClose={handleMenuClose}
         >
             <MenuItem>  <Link href={`/profile/${session?.user?._id}`} style={{ color: 'unset', textDecoration: "unset" }}>Profile</Link> </MenuItem>
-            <MenuItem onClick={() => {handleMenuClose();signOut()}}>Logout</MenuItem>
+            <MenuItem onClick={() => { handleMenuClose(); signOut() }}>Logout</MenuItem>
         </Menu >
     );
 
@@ -192,7 +193,17 @@ export default function AppHeader() {
                                     <Link href="/like">Likes</Link>
                                     <Link href="/track/upload">UpLoad</Link>
 
-                                    <Avatar onClick={handleProfileMenuOpen}>DM</Avatar>
+
+                                    <img onClick={handleProfileMenuOpen}
+                                        style={{
+                                            height: 35, width: 35,
+                                            cursor: "pointer"
+                                        }}
+                                        src={fetchDefaultImages(session.user.type)}
+
+                                    />
+
+                                    {/* // <Avatar onClick={handleProfileMenuOpen}>DM</Avatar> */}
 
 
                                 </> : <>
