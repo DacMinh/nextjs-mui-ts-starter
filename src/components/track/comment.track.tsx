@@ -6,13 +6,16 @@ import { fetchDefaultImages, sendRequest } from '@/utils/api';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSession } from 'next-auth/react';
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation"
+import { useHasMounted } from '@/utils/customHook';
+
 dayjs.extend(relativeTime)
 
 
 interface IProps {
     track: ITrackTop | null;
     comments: Comment[];
+    wavesurfer: any;
 }
 
 interface Comment {
@@ -37,33 +40,45 @@ interface Comment {
 const CommentTrack = (props: IProps) => {
 
     const router = useRouter();
-    const { comments, track } = props;
+    const { comments, track, wavesurfer } = props;
     const [yourComment, setYourComment] = React.useState("");
     const { data: session } = useSession()
+    const hasMounted = useHasMounted()
     const handleSubmit = async () => {
+
+
         const res = await sendRequest<IBackendRes<ITrackComment>>({
             url: `http://localhost:8000/api/v1/comments`,
             method: "POST",
             body: {
                 content: yourComment,
-                moment: 10,
+                moment: Math.round(wavesurfer?.getCurrentTime() ?? 0),
                 track: track?._id
             },
             headers: {
                 Authorization: `Bearer ${session?.access_token}`
             }
         })
-        if(res.data) {
+        if (res.data) {
             setYourComment("")
             router.refresh()
         }
     }
-    
+
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
         const secondsRemainder = Math.round(seconds) % 60
         const paddedSeconds = `0${secondsRemainder}`.slice(-2)
         return `${minutes}:${paddedSeconds}`
+    }
+
+    const handleJumpTrack = (timeToSet: number) => {
+        if (wavesurfer) {
+            const duration = wavesurfer?.getDuration();
+            wavesurfer.seekTo(timeToSet / duration)
+
+            wavesurfer.play()
+        }
     }
 
 
@@ -82,6 +97,7 @@ const CommentTrack = (props: IProps) => {
                 {session?.user && <TextField value={yourComment} id="standard-basic" label="Comment" variant="standard" onChange={(e) => setYourComment(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
+                            e.preventDefault()
                             handleSubmit()
                         }
                     }} />}
@@ -105,12 +121,17 @@ const CommentTrack = (props: IProps) => {
                             </div>
                             <div>
                                 <div>
-                                    <p style={{ margin: '0', marginBottom: '5px' }}>{comment.user.name} at {formatTime(comment.moment)}</p>
+                                    <p style={{ margin: '0', marginBottom: '5px' }} onClick={() => handleJumpTrack(comment.moment)}>
+                                        {comment.user.name} at {" "}
+                                        <span style={{ cursor: "pointer" }}>
+                                            {formatTime(comment.moment)}
+                                        </span>
+                                    </p>
                                     <p style={{ margin: '0' }}>{comment.content}</p>
                                 </div>
                             </div>
                             <div style={{ marginLeft: 'auto' }}>
-                                {dayjs(comment.createdAt).fromNow()}
+                                {hasMounted && dayjs(comment.createdAt).fromNow()}
 
                             </div>
                         </div>

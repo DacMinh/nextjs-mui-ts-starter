@@ -11,11 +11,16 @@ import { Tooltip } from "@mui/material";
 import { useTrackContext } from "@/lib/track.wrapper";
 import { fetchDefaultImages } from "@/utils/api";
 import CommentTrack from "./comment.track";
+import LikeTrack from "./like.track";
 
 interface IProps {
     track: ITrackTop | null;
     comments: any
+    LikeTracks: IModelPaginate<ITrackLike> | null;
+
 }
+
+
 interface Comment {
     id: string;
     content: string;
@@ -34,7 +39,9 @@ interface Comment {
 }
 
 const WaveTrack = (props: IProps) => {
-    const { track, comments } = props;
+    const { track, comments, LikeTracks } = props;
+
+    
     const comment1 = comments.result
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
@@ -124,7 +131,8 @@ const WaveTrack = (props: IProps) => {
 
 
     const calLeft = (moment: number) => {
-        const hardCodeDuration = 199;
+        const hardCodeDuration = wavesurfer?.getDuration() ?? 0
+
         const percent = (moment / hardCodeDuration) * 100;
         return `${percent}%`
     }
@@ -139,9 +147,10 @@ const WaveTrack = (props: IProps) => {
         if (track?._id && !currentTrack?._id)
             setCurrentTrack({ ...track, isPlaying: false })
     }, [track])
+    
 
 
-  
+
     return (
         <div style={{ marginTop: 20 }}>
             <div
@@ -284,7 +293,10 @@ const WaveTrack = (props: IProps) => {
                 </div>
             </div>
             <div>
-                <CommentTrack comments={comment1} track={track} />
+                <LikeTrack track={track}  LikeTrackLists={LikeTracks}/>
+            </div>
+            <div>
+                <CommentTrack comments={comment1} track={track} wavesurfer={wavesurfer} />
             </div>
         </div >
     )

@@ -1,3 +1,5 @@
+import { LargeNumberLike } from "crypto";
+
 export { };
 // https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
 
@@ -66,12 +68,35 @@ declare global {
         pages: number,
         total: number
     }
+
+    interface IModelPaginate {
+        current: number,
+        pageSize: number,
+        pages: number,
+        total: number
+    }
+
     interface ITrackComment {
         current: number,
         pageSize: number,
         pages: number,
         total: number
     }
+
+
+    interface ITrackLike {
+        _id: string;
+        title: string;
+        description:string;
+        category:string;
+        imgUrl:string;
+        trackUrl:string;
+        countLike:number;
+        countPlay:LargeNumberLike;
+        createdAt:string;
+        updateAt:string
+    }
+
 
 }
 
