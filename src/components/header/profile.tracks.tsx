@@ -1,147 +1,147 @@
 'use client'
-// import * as React from 'react';
-// import { useTheme } from '@mui/material/styles';
-// import Box from '@mui/material/Box';
-// import Card from '@mui/material/Card';
-// import CardContent from '@mui/material/CardContent';
-// import CardMedia from '@mui/material/CardMedia';
-// import IconButton from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
-// import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-// import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-// import SkipNextIcon from '@mui/icons-material/SkipNext';
-// import { useTrackContext } from '@/lib/track.wrapper';
-// import PauseIcon from '@mui/icons-material/Pause';
-
-// interface IProps {
-//     data: ITrackTop
-// }
-
-
-
-// const ProfileTracks = (props: IProps) => {
-//     const { data } = props;
-
-//     const theme = useTheme();
-//     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
-//     return (
-//         <Card sx={{ display: 'flex' }}>
-//             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-//                 <CardContent sx={{ flex: '1 0 auto' }}>
-//                     <Typography component="div" variant="h5">
-//                         {data.title}
-//                     </Typography>
-//                     <Typography variant="subtitle1" color="text.secondary" component="div">
-//                         {data.description}
-//                     </Typography>
-//                 </CardContent>
-
-//                 <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-//                     <IconButton aria-label="previous">
-//                         {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-//                     </IconButton>
-//                     {
-//                         (data._id !== currentTrack._id ||
-//                             data._id === currentTrack._id && currentTrack.isPlaying === false
-//                         )
-//                         &&
-//                         <IconButton aria-label="play/pause"
-//                             onClick={(e) => {
-//                                 setCurrentTrack({ ...data, isPlaying: true });
-//                             }}
-//                         >
-//                             <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-//                         </IconButton>
-//                     }
-//                     {data._id === currentTrack._id && currentTrack.isPlaying === true
-//                         &&
-//                         <IconButton aria-label="play/pause"
-//                             onClick={(e) => {
-//                                 setCurrentTrack({ ...data, isPlaying: false });
-//                             }}
-//                         >
-//                             <PauseIcon sx={{ height: 38, width: 38 }}
-//                             />
-//                         </IconButton>
-//                     }
-//                     <IconButton aria-label="play/pause" onClick={() => setCurrentTrack({ ...data, isPlaying: false })}>
-//                         <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-//                     </IconButton>
-//                     <IconButton aria-label="next">
-//                         {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-//                     </IconButton>
-//                 </Box>
-//             </Box>
-//             <CardMedia
-//                 component="img"
-//                 sx={{ width: 151, height: 151, objectFit: 'cover', marginLeft: 'auto' }}
-//                 image={"http://localhost:8000/images/" + data.imgUrl}
-
-
-
-//             />
-//         </Card>
-
-//     )
-// }
-// export default ProfileTracks
-import React from 'react';
+import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Box, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
-import { SkipPrevious as SkipPreviousIcon, PlayArrow as PlayArrowIcon, SkipNext as SkipNextIcon } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { useTrackContext } from '@/lib/track.wrapper';
 import PauseIcon from '@mui/icons-material/Pause';
-import Link from 'next/link';
 
 interface IProps {
     data: ITrackTop
 }
 
+
+
 const ProfileTracks = (props: IProps) => {
     const { data } = props;
+
     const theme = useTheme();
-    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
-
-    const isCurrentTrack = data._id === currentTrack._id;
-    const isPlaying = isCurrentTrack && currentTrack.isPlaying;
-
-    const handlePlayPauseClick = () => {
-        setCurrentTrack({ ...data, isPlaying: !isPlaying });
-    };
-
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
     return (
         <Card sx={{ display: 'flex' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Link style={{ textDecoration: "none", color: "unset" }} href={`/track/${data._id}?audio=${data.trackUrl}&id=${data._id}`}>
-                        <Typography component="div" variant="h5">{data.title}</Typography>
-
-                    </Link>
-                    <Typography variant="subtitle1" color="text.secondary">{data.description}</Typography>
+                    <Typography component="div" variant="h5">
+                        {data.title}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary" component="div">
+                        {data.description}
+                    </Typography>
                 </CardContent>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                     <IconButton aria-label="previous">
                         {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
                     </IconButton>
-
-                    <IconButton aria-label="play/pause" onClick={handlePlayPauseClick}>
-                        {isPlaying ? <PauseIcon sx={{ height: 38, width: 38 }} /> : <PlayArrowIcon sx={{ height: 38, width: 38 }} />}
+                    {
+                        (data._id !== currentTrack._id ||
+                            data._id === currentTrack._id && currentTrack.isPlaying === false
+                        )
+                        &&
+                        <IconButton aria-label="play/pause"
+                            onClick={(e) => {
+                                setCurrentTrack({ ...data, isPlaying: true });
+                            }}
+                        >
+                            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                        </IconButton>
+                    }
+                    {data._id === currentTrack._id && currentTrack.isPlaying === true
+                        &&
+                        <IconButton aria-label="play/pause"
+                            onClick={(e) => {
+                                setCurrentTrack({ ...data, isPlaying: false });
+                            }}
+                        >
+                            <PauseIcon sx={{ height: 38, width: 38 }}
+                            />
+                        </IconButton>
+                    }
+                    <IconButton aria-label="play/pause" onClick={() => setCurrentTrack({ ...data, isPlaying: false })}>
+                        <PlayArrowIcon sx={{ height: 38, width: 38 }} />
                     </IconButton>
-
                     <IconButton aria-label="next">
                         {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
                     </IconButton>
                 </Box>
             </Box>
-
             <CardMedia
                 component="img"
                 sx={{ width: 151, height: 151, objectFit: 'cover', marginLeft: 'auto' }}
-                image={`http://localhost:8000/images/${data.imgUrl}`}
-            />
-        </Card >
-    );
-};
+                image={"http://localhost:8000/images/" + data.imgUrl}
 
-export default ProfileTracks;
+
+
+            />
+        </Card>
+
+    )
+}
+export default ProfileTracks
+// import React from 'react';
+// import { useTheme } from '@mui/material/styles';
+// import { Box, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
+// import { SkipPrevious as SkipPreviousIcon, PlayArrow as PlayArrowIcon, SkipNext as SkipNextIcon } from '@mui/icons-material';
+// import { useTrackContext } from '@/lib/track.wrapper';
+// import PauseIcon from '@mui/icons-material/Pause';
+// import Link from 'next/link';
+
+// interface IProps {
+//     data: ITrackTop
+// }
+
+// const ProfileTracks = (props: IProps) => {
+//     const { data } = props;
+//     const theme = useTheme();
+//     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+
+//     const isCurrentTrack = data._id === currentTrack._id;
+//     const isPlaying = isCurrentTrack && currentTrack.isPlaying;
+
+//     const handlePlayPauseClick = () => {
+//         setCurrentTrack({ ...data, isPlaying: !isPlaying });
+//     };
+
+//     return (
+//         <Card sx={{ display: 'flex' }}>
+//             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+//                 <CardContent sx={{ flex: '1 0 auto' }}>
+//                     <Link style={{ textDecoration: "none", color: "unset" }} href={`/track/${data._id}?audio=${data.trackUrl}&id=${data._id}`}>
+//                         <Typography component="div" variant="h5">{data.title}</Typography>
+
+//                     </Link>
+//                     <Typography variant="subtitle1" color="text.secondary">{data.description}</Typography>
+//                 </CardContent>
+
+//                 <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+//                     <IconButton aria-label="previous">
+//                         {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
+//                     </IconButton>
+
+//                     <IconButton aria-label="play/pause" onClick={handlePlayPauseClick}>
+//                         {isPlaying ? <PauseIcon sx={{ height: 38, width: 38 }} /> : <PlayArrowIcon sx={{ height: 38, width: 38 }} />}
+//                     </IconButton>
+
+//                     <IconButton aria-label="next">
+//                         {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
+//                     </IconButton>
+//                 </Box>
+//             </Box>
+
+//             <CardMedia
+//                 component="img"
+//                 sx={{ width: 151, height: 151, objectFit: 'cover', marginLeft: 'auto' }}
+//                 image={`http://localhost:8000/images/${data.imgUrl}`}
+//             />
+//         </Card >
+//     );
+// };
+
+// export default ProfileTracks;
